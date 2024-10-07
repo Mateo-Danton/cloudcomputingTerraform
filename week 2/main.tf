@@ -33,32 +33,24 @@ resource "azurerm_windows_web_app" "app" {
 
 }
 
-# Server PostgreSQL 
-resource "azurerm_postgresql_server" "main" {
-  name                = var.servername
+# Server CosmosDB (NoSQL)
+resource "azurerm_cosmosdb_account" "cosmosdb" {
+  name                = "testCosmosDbAccountMat"
   location            = var.location
   resource_group_name = var.groupname
+  offer_type          = "Standard"
+  kind                = "MongoDB" 
 
-  sku_name = "B_Gen5_1"
-  version  = "11"
-
-  administrator_login          = var.adminuser
-  administrator_login_password = var.adminpassword
-
-  backup_retention_days = 7
-  ssl_enforcement_enabled = true
-
-  storage_mb        = 5120
-  auto_grow_enabled = true
+  capabilities {
+    name = "EnableMongo"
+  }
 }
 
-# Base de données PostgreSQL
-resource "azurerm_postgresql_database" "main" {
-  name                = "testDatabaseMat"
+# Base de données CosmosDB
+resource "azurerm_cosmosdb_mongo_database" "mongo_database" {
+  name                = "myDatabase"
   resource_group_name = var.groupname
-  server_name         = var.servername
-  charset             = "UTF8"
-  collation           = "English_United States.1252"
+  account_name        = var.location
 }
 
 # Storage account

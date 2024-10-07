@@ -28,3 +28,7 @@ variable "adminpassword" {
   default     = "1LuvP0stGreSQL"
   description = "Mot de passe PostgreSQL"
 }
+
+variable "subscriptionid" {
+  type = string
+}
